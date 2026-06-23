@@ -1,6 +1,6 @@
 # Matching Universe
 
-AI 기반 채용 후보자 매칭 파이프라인입니다. JD(채용공고)와 CV(후보자 이력서)를 입력받아, BM25/TF-IDF 키워드 검색 → BGE-M3 임베딩 검색 → BGE-Reranker-v2-M3 정밀 재채점 → Gemini 기반 추천 해설까지 4단계 매칭 구조로 후보자 순위를 산출합니다.
+AI 기반 채용 후보자 매칭 파이프라인입니다. JD(채용공고)와 CV(후보자 이력서)를 입력받아, BM25/TF-IDF 키워드 검색 → BGE-M3 임베딩 검색 → BGE-Reranker-v2-M3 정밀 재채점 → Gemini 기반 추천 해설까지 4단계 깔때기 구조로 후보자 순위를 산출합니다.
 
 ```
 #ai-recruitment  #candidate-matching  #bge-m3  #cross-encoder  #gemini  #nlp  #korean
@@ -31,6 +31,15 @@ AI 기반 채용 후보자 매칭 파이프라인입니다. JD(채용공고)와 
 - [Output files](#output-files)
 - [Notes](#notes)
 - [Roadmap](#roadmap)
+- [처음 시작하는 분을 위한 완전 가이드 (Windows)](#-처음-시작하는-분을-위한-완전-가이드-windows)
+  - [Step 0 — 터미널 여는 법](#step-0--터미널-여는-법)
+  - [Step 1 — Python 설치 확인](#step-1--python-설치-확인)
+  - [Step 2 — Git으로 저장소 받기](#step-2--git으로-저장소-받기)
+  - [Step 3 — 가상환경 만들고 패키지 설치](#step-3--가상환경-만들고-패키지-설치)
+  - [Step 4 — 데이터 파일 배치](#step-4--데이터-파일-배치)
+  - [Step 5A — Jupyter Notebook으로 실행](#step-5a--jupyter-notebook으로-실행)
+  - [Step 5B — Python 스크립트로 실행](#step-5b--python-스크립트로-실행)
+  - [노트북을 Python 파일로 변환하는 방법](#노트북을-python-파일로-변환하는-방법)
 
 ---
 
@@ -541,6 +550,227 @@ match_reason_rule_based, gap_rule_based, interview_questions_rule_based
 
 ---
 
+---
+
+## 🖥 처음 시작하는 분을 위한 완전 가이드 (Windows)
+
+파이썬이나 Git을 처음 사용해 보는 분도 아래 순서를 따라 하면 혼자 설치하고 실행할 수 있습니다.
+
+---
+
+### Step 0 — 터미널 여는 법
+
+Windows에는 터미널이 두 종류 있습니다. 이 가이드는 **PowerShell**을 기준으로 설명합니다.
+
+**방법 1 — 시작 메뉴에서 열기**
+
+1. 키보드에서 `Windows 키` 누르기
+2. `PowerShell` 입력 후 Enter
+3. 파란 창이 뜨면 성공
+
+**방법 2 — 폴더에서 바로 열기**
+
+1. 파일 탐색기에서 원하는 폴더 열기
+2. 주소 표시줄에 `powershell` 입력 후 Enter
+3. 해당 폴더 위치에서 PowerShell이 열림 ← 이 방법이 더 편합니다
+
+> ⚠️ **"이 스크립트는 시스템에서 실행할 수 없습니다"** 오류가 뜨면:
+> PowerShell을 **관리자 권한으로 실행** 한 뒤 아래 명령을 한 번만 입력합니다.
+> ```powershell
+> Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+> `Y` 입력 후 Enter → 이후 일반 PowerShell에서 정상 동작합니다.
+
+---
+
+### Step 1 — Python 설치 확인
+
+터미널에서 아래를 입력해 Python이 설치되어 있는지 확인합니다.
+
+```powershell
+python --version
+```
+
+결과가 `Python 3.10.x` 또는 `3.11.x`처럼 나오면 통과입니다.
+
+**Python이 없거나 버전이 3.9 이하라면:**
+
+1. [https://www.python.org/downloads/](https://www.python.org/downloads/) 접속
+2. **"Download Python 3.11.x"** 버튼 클릭해 설치 파일 다운로드
+3. 설치 파일 실행 → **"Add Python to PATH"** 체크박스 반드시 체크 ← 이게 가장 중요
+4. "Install Now" 클릭
+5. 설치 완료 후 PowerShell을 닫았다가 다시 열고 `python --version` 다시 확인
+
+**Git이 없다면:**
+
+```powershell
+git --version
+```
+
+`git version 2.x.x`가 나오지 않으면 [https://git-scm.com/download/win](https://git-scm.com/download/win) 에서 설치합니다.
+설치 중 모든 옵션은 기본값(Next → Next → Install)으로 진행하면 됩니다.
+
+---
+
+### Step 2 — Git으로 저장소 받기
+
+PowerShell에서 저장소를 받고 싶은 폴더로 이동한 뒤 아래 명령을 입력합니다.
+
+```powershell
+# 예: D 드라이브의 Projects 폴더로 이동
+cd D:\Projects
+
+# 저장소 클론 (다운로드)
+git clone https://github.com/doctorSong1/universe.git
+
+# 저장소 폴더로 이동
+cd universe
+```
+
+> 폴더 경로에 **한글이나 공백**이 포함되어 있으면 오류가 날 수 있습니다.
+> `D:\Projects` 처럼 영문·숫자 경로를 사용하는 것을 권장합니다.
+
+---
+
+### Step 3 — 가상환경 만들고 패키지 설치
+
+가상환경이란 이 프로젝트 전용 Python 공간입니다. 다른 프로젝트와 패키지가 섞이지 않도록 격리해 줍니다.
+
+```powershell
+# 1. 가상환경 생성 (universe 폴더 안에서 실행)
+python -m venv .venv
+```
+
+```powershell
+# 2. 가상환경 활성화
+.venv\Scripts\Activate.ps1
+```
+
+활성화에 성공하면 터미널 맨 앞에 `(.venv)` 표시가 붙습니다.
+
+```powershell
+# (.venv) PS D:\Projects\universe>   ← 이렇게 보이면 성공
+```
+
+> **활성화가 안 된다면** (오류 메시지가 뜨는 경우):
+> ```powershell
+> Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+> 입력 후 `Y` → Enter → 다시 `.venv\Scripts\Activate.ps1` 실행
+
+```powershell
+# 3. pip 업그레이드 (최신 버전으로)
+python -m pip install --upgrade pip
+
+# 4. 필요한 패키지 한 번에 설치
+pip install -r requirements.txt
+```
+
+> 패키지 설치는 처음 한 번만 하면 됩니다. 다음에 다시 시작할 때는
+> 가상환경 활성화(`.venv\Scripts\Activate.ps1`)만 해주면 됩니다.
+
+```powershell
+# 5. Jupyter Notebook에서 이 가상환경을 쓸 수 있도록 커널 등록
+python -m ipykernel install --user --name matching-universe --display-name "Python (matching-universe)"
+```
+
+---
+
+### Step 4 — 데이터 파일 배치
+
+클론한 `universe` 폴더 안에 `data` 폴더를 만들고, 아래 구조에 맞게 파일을 넣어줍니다.
+
+```text
+universe\
+├── data\
+│   ├── 05_profiles\                     ← 빈 폴더로 유지 (CV는 비공개)
+│   ├── 07_embeddings\
+│   │   ├── cv_embeddings_only_bge_m3_10.npz    ← 별도 제공
+│   │   ├── cv_embedding_meta_bge_m3_10.csv     ← 별도 제공
+│   │   └── jd_embeddings_bge_m3.npy            ← 별도 제공
+│   ├── 10_jd\
+│   │   └── jd_dataset_613_filled.csv           ← 별도 제공
+│   └── 10_evaluation\
+│       └── ground_truth_matches.xlsx           ← 직접 작성 (평가 시 필요)
+└── configs\
+    └── taxonomy_stopwords.yaml                 ← 저장소에 포함됨
+```
+
+파일 탐색기로 폴더를 직접 만들고 파일을 붙여넣어도 됩니다.
+
+---
+
+### Step 5A — Jupyter Notebook으로 실행
+
+```powershell
+# 가상환경이 활성화된 상태 (.venv 표시 확인)에서
+jupyter notebook
+```
+
+브라우저가 자동으로 열립니다. 열리지 않으면 터미널에 나온 주소(`http://localhost:8888/...`)를 복사해 브라우저에 붙여넣습니다.
+
+1. `09_matching_universe_v5.ipynb` 파일을 클릭해 엽니다.
+2. 우측 상단의 **커널 선택** 버튼 클릭 → `Python (matching-universe)` 선택
+3. 상단 메뉴 **Cell → Run All** 클릭
+
+> **처음 실행할 때는** `Cell 01`에서 아래 값을 먼저 수정하세요.
+>
+> ```python
+> MANUAL_TARGET_JD_IDS = [191]    # 테스트할 JD 번호 1~2개만
+> TOP_N_CROSS_ENCODER = 30        # CPU 환경에서는 30 이하로 줄이면 빠름
+> ```
+
+---
+
+### Step 5B — Python 스크립트로 실행
+
+노트북 대신 변환된 `.py` 파일을 터미널에서 직접 실행할 수도 있습니다.
+
+```powershell
+# 가상환경 활성화된 상태에서
+python 09_matching_universe_v5.py
+```
+
+실행 중 로그가 터미널에 출력되며, 완료되면 `data/08_matching/` 폴더에 결과 파일이 생성됩니다.
+
+> **설정 변경 방법**: 파일을 메모장이나 VS Code로 열어 `# Cell 01 | 경로 및 실행 설정` 블록을 찾아 값을 수정합니다.
+
+---
+
+### 노트북을 Python 파일로 변환하는 방법
+
+이 저장소의 `09_matching_universe_v5.py`는 아래 방법으로 노트북으로부터 변환된 파일입니다. 직접 변환하고 싶을 때는 이 명령을 사용합니다.
+
+**방법 1 — 터미널 명령 (권장)**
+
+```powershell
+# 가상환경 활성화 상태에서
+# nbconvert가 없으면 먼저 설치
+pip install nbconvert
+
+# 변환 실행
+jupyter nbconvert --to script 09_matching_universe_v5.ipynb
+```
+
+실행하면 같은 폴더에 `09_matching_universe_v5.py` 파일이 생성됩니다.
+
+**방법 2 — Jupyter Notebook UI에서**
+
+1. 노트북을 Jupyter에서 열기
+2. 상단 메뉴 **File → Download as → Python (.py)** 클릭
+3. 다운로드된 `.py` 파일을 프로젝트 폴더에 옮기기
+
+**방법 3 — VS Code에서**
+
+VS Code에 Jupyter 확장을 설치했다면:
+1. `.ipynb` 파일을 VS Code로 열기
+2. 우측 상단 `...` 메뉴 → **Export → Python Script** 클릭
+
+> ⚠️ 변환 시 노트북의 마크다운 셀은 `# 주석`으로, 코드 셀은 그대로 변환됩니다.
+> `# In[1]:` 같은 셀 번호 주석이 자동으로 삽입되는데, 실행에는 영향을 주지 않습니다.
+
+---
+
 ## License
 
 > TODO — 라이선스는 추후 결정 예정입니다. 라이선스가 확정되기 전까지는 별도 허가 없이 재배포·상업적 이용을 금지합니다.
@@ -553,6 +783,3 @@ match_reason_rule_based, gap_rule_based, interview_questions_rule_based
 - Repository: [doctorSong1/universe](https://github.com/doctorSong1/universe)
 
 이슈나 개선 제안은 GitHub Issues로 남겨주세요.
-
-
-
