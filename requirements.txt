@@ -1,0 +1,8 @@
+numpy
+pandas
+scikit-learn
+openpyxl
+sentence-transformers
+google-generativeai
+jupyter
+ipykernel
