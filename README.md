@@ -1,4 +1,4 @@
-# Matching Universe
+# Matching Universe_개요
 
 AI 기반 채용 후보자 매칭 파이프라인입니다. JD(채용공고)와 CV(후보자 이력서)를 입력받아, BM25/TF-IDF 키워드 검색 → BGE-M3 임베딩 검색 → BGE-Reranker-v2-M3 정밀 재채점 → Gemini 기반 추천 해설까지 4단계 깔때기 구조로 후보자 순위를 산출합니다.
 
